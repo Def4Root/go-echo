@@ -37,9 +37,9 @@ func main() {
 	output = strings.Replace(output, "-n", "", -1)
 	output = strings.Replace(output, "-e", "", -1)
 
-	if !*addNewline {
+	if *addNewline {
 		fmt.Print(output)
 	} else {
-		fmt.Println(output)
+		fmt.Print(output, "\n")
 	}
 }
