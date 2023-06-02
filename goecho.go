@@ -8,23 +8,30 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("")
 		return
 	}
 
-	args := []string{}
-	for i := 1; i < len(os.Args); i++ {
-		if strings.Contains(os.Args[i], "$") {
-			varArg := strings.Replace(os.Args[i], "$", "", -1)
-			args = append(args, os.Getenv(varArg))
-		} else {
-			args = append(args, os.Args[i])
+	var result []string
+	addNewline := true
+
+	for _, arg := range os.Args[1:] {
+		switch {
+		case strings.HasPrefix(arg, "$"):
+			envVar := os.Getenv(strings.TrimPrefix(arg, "$"))
+			result = append(result, envVar)
+		case arg == "-n":
+			addNewline = false
+		default:
+			result = append(result, arg)
 		}
 	}
 
-	for _, arg := range args {
-		fmt.Print(arg, " ")
-	}
+	output := strings.Join(result, " ")
+	output = strings.ReplaceAll(output, "\\n", "\n")
 
-	fmt.Println("")
+	if addNewline {
+		fmt.Print(output, "\n")
+	} else {
+		fmt.Print(output)
+	}
 }
