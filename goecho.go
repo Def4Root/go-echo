@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -13,7 +14,12 @@ func main() {
 
 	args := []string{}
 	for i := 1; i < len(os.Args); i++ {
-		args = append(args, os.Args[i])
+		if strings.Contains(os.Args[i], "$") {
+			varArg := strings.Replace(os.Args[i], "$", "", -1)
+			args = append(args, os.Getenv(varArg))
+		} else {
+			args = append(args, os.Args[i])
+		}
 	}
 
 	for _, arg := range args {
