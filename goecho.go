@@ -21,13 +21,15 @@ func main() {
 			result = append(result, envVar)
 		case arg == "-n":
 			addNewline = false
+		case arg == "-e":
+			replaced := strings.ReplaceAll(arg, "\\n", "\n")
+			result = append(result, replaced)
 		default:
 			result = append(result, arg)
 		}
 	}
 
 	output := strings.Join(result, " ")
-	output = strings.ReplaceAll(output, "\\n", "\n")
 
 	if addNewline {
 		fmt.Print(output, "\n")
